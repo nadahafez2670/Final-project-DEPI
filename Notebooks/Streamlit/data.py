@@ -27,7 +27,10 @@ labels = ["Churned", "Not Churned"]
 fig = px.pie(
     names=labels,
     values=counts,
+    color_discrete_sequence=["#94b5d2", "#b6d895"]   # same colors as the matplotlib pie
 )
+
+
 
 st.plotly_chart(fig, use_container_width=True)
 
@@ -51,9 +54,12 @@ st.header("Gender distribution", divider=True)
 gender = df["gender"].value_counts().values
 label = df["gender"].value_counts().index
 
-fig1=px.pie(
-    values = gender, names = label
+fig1 = px.pie(
+    values=gender,
+    names=label,
+    color_discrete_sequence=["skyblue", "pink"]   # same colors as the first plot
 )
+
 
 st.plotly_chart(fig1, use_container_width=True)
 
@@ -78,9 +84,13 @@ fig.update_layout(
 st.plotly_chart(fig2, use_container_width=True)
 
 
-st.text_area("","More than half of the customers are Male, BUT The churn rate of the female customers are much higher than the male customers "
-)
+st.markdown(
+    """
+### **Gender Insight**
 
+    More than half of the customers are male, but the churn rate among female customers is significantly higher than that of male customers.
+"""
+)
 st.header("Churn by Support calls", divider= True)
 
 
@@ -97,7 +107,22 @@ fig3 = px.histogram(
 
 st.plotly_chart(fig3, use_container_width=True)
 
-st.text_area("","As the number of support calls increases, the churn rate rises significantly. Customers who make more than 5 calls almost always churn, which indicates potential issues with the effectiveness of customer support.")
+st.markdown(
+    """
+### **Support Calls Insight**
+
+
+    As the number of support calls increases, the churn rate rises significantly.
+
+    Customers who make more than 5 calls almost always churn
+
+    This indicates dissatisfaction with support service
+
+    Customer support effectiveness may need improvement
+
+"""
+)
+
 
 
 # --- 3 Columns Layout ---
@@ -155,13 +180,20 @@ with col3:
     )
     st.plotly_chart(fig6, use_container_width=True)
 
-st.text_area("",
-"""The subscription types have nearly equal proportions in the data.
-The churn rate across the subscription types is also almost equal, although the Basic plan shows a slightly higher churn rate compared to the others.
-Almost half of customers with annual and quarterly contracts churn, but the majorty of customers with monthly contracts churn """
+st.markdown(
+    """
+### **Subscription & Contract Insights**
+
+    Subscription types appear in nearly equal proportions
+
+    Basic plan shows a slightly higher churn rate
+
+    Almost half of annual and quarterly contract customers churn
+
+    Indicates lower loyalty among short-contract customers
+
+"""
 )
-
-
 
 corr = df.corr(numeric_only=True)
 
