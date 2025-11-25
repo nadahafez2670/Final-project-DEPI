@@ -12,7 +12,7 @@ st.set_page_config(layout="wide", page_title="Prediction & Retention")
 
 # --- CONFIGURE GEMINI API ---
 if "GOOGLE_API_KEY" not in st.session_state:
-    st.session_state["GOOGLE_API_KEY"] = "AIzaSyDij_OLwuQTuG5ePUct0gqTMPmTCV9leqc"  
+    st.session_state["GOOGLE_API_KEY"] = "AIzaSyBMe5Jy75UcugY1-YXIx-RvdCErqKSXsls"  
 genai.configure(api_key=st.session_state["GOOGLE_API_KEY"])
 
 # Load the model
@@ -225,3 +225,4 @@ if st.session_state.get("is_churn", False):
 
 elif st.session_state.get("prediction_made", False) and not st.session_state.is_churn:
     st.info("👋 This customer is Low Risk. No retention intervention is needed.")
+
