@@ -25,30 +25,69 @@ except:
 # ==========================================
 # 2. INPUT FORM (SIDEBAR)
 # ==========================================
-feature_names=['age', 'tenure', 'usage_frequency', 'support_calls', 'payment_delay',
-       'total_spend', 'last_interaction', 'gender_Female', 'gender_Male',
-       'subscription_type_Basic', 'subscription_type_Premium',
-       'subscription_type_Standard', 'contract_length_Annual',
-       'contract_length_Monthly', 'contract_length_Quarterly']
-numerical_features = ['Age', 'Tenure', 'Usage Frequency', 'Support Calls', 'Payment Delay', 'Total Spend', 'Last Interaction']
+feature_names = [
+    'age', 'tenure', 'usage_frequency', 'support_calls', 'payment_delay',
+    'total_spend', 'last_interaction',
+    'gender_Female', 'gender_Male',
+    'subscription_type_Basic', 'subscription_type_Premium', 'subscription_type_Standard',
+    'contract_length_Annual', 'contract_length_Monthly', 'contract_length_Quarterly'
+]
 
-default_values = [40,31,15,4,13,620,15,True,False,True,False,False,True,False,False]
+# For easy detection
+numerical_features = ['age', 'tenure', 'usage_frequency', 'support_calls',
+                      'payment_delay', 'total_spend', 'last_interaction']
 
+# Categorical groups (clean labels + options)
+categorical_groups = {
+    "gender": ["Male", "Female"],
+    "subscription_type": ["Basic", "Standard", "Premium"],
+    "contract_length": ["Monthly", "Quarterly", "Annual"]
+}
+
+# Default values by MAIN category selection (not one-hot)
+defaults = {
+    "gender": "Male",
+    "subscription_type": "Basic",
+    "contract_length": "Annual"
+}
+
+# Start collecting user inputs
 user_inputs = {}
 st.sidebar.header("Customer Profile Input")
-for i, feature in enumerate(feature_names):
-    if feature in numerical_features:
-        user_inputs[feature] = st.sidebar.number_input(
-            feature, value=default_values[i], step=1 if isinstance(default_values[i], int) else 0.01
-        )
-    elif isinstance(default_values[i], bool):
-        user_inputs[feature] = st.sidebar.checkbox(feature, value=default_values[i])
-    else:
-        user_inputs[feature] = st.sidebar.number_input(
-            feature, value=default_values[i], step=1
-        )
 
-input_data = pd.DataFrame([user_inputs])
+# Handle numeric features
+for feature in numerical_features:
+    user_inputs[feature] = st.sidebar.number_input(
+        feature.replace("_", " ").title(),
+        value=40 if feature == "age" else 10,
+        step=1
+    )
+
+# ---- HANDLE SELECT BOX CATEGORIES ----
+# gender
+selected_gender = st.sidebar.selectbox("Gender", categorical_groups["gender"], index=categorical_groups["gender"].index(defaults["gender"]))
+user_inputs["gender_Male"] = 1 if selected_gender == "Male" else 0
+user_inputs["gender_Female"] = 1 if selected_gender == "Female" else 0
+
+# subscription type
+selected_sub = st.sidebar.selectbox("Subscription Type", categorical_groups["subscription_type"],
+                                    index=categorical_groups["subscription_type"].index(defaults["subscription_type"]))
+user_inputs["subscription_type_Basic"] = 1 if selected_sub == "Basic" else 0
+user_inputs["subscription_type_Standard"] = 1 if selected_sub == "Standard" else 0
+user_inputs["subscription_type_Premium"] = 1 if selected_sub == "Premium" else 0
+
+# contract length
+selected_contract = st.sidebar.selectbox("Contract Length", categorical_groups["contract_length"],
+                                         index=categorical_groups["contract_length"].index(defaults["contract_length"]))
+user_inputs["contract_length_Monthly"] = 1 if selected_contract == "Monthly" else 0
+user_inputs["contract_length_Quarterly"] = 1 if selected_contract == "Quarterly" else 0
+user_inputs["contract_length_Annual"] = 1 if selected_contract == "Annual" else 0
+
+
+correct_feature_order =  ['age', 'tenure', 'usage_frequency', 'support_calls', 'payment_delay', 'total_spend', 'last_interaction', 'gender_Female', 'gender_Male', 'subscription_type_Basic', 'subscription_type_Premium', 'subscription_type_Standard', 'contract_length_Annual', 'contract_length_Monthly', 'contract_length_Quarterly'] 
+
+input_data = pd.DataFrame([user_inputs])[correct_feature_order]
+
 
 # ==========================================
 # 3. PAGE LAYOUT
