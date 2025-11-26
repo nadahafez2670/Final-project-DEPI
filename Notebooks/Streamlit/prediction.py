@@ -10,11 +10,16 @@ import google.generativeai as genai
 # ==========================================
 st.set_page_config(layout="wide", page_title="Prediction & Retention")
 
-# --- CONFIGURE GEMINI API ---
-if "GOOGLE_API_KEY" not in st.session_state:
-    st.session_state["GOOGLE_API_KEY"] = "AIzaSyBMe5Jy75UcugY1-YXIx-RvdCErqKSXsls"  
-genai.configure(api_key=st.session_state["GOOGLE_API_KEY"])
+# Load API Key from Streamlit Secrets
+try:
+    api_key = st.secrets["GOOGLE_API_KEY"]
+except FileNotFoundError:
+    # ده عشان لو حبيت تجرب الكود علي جهازك من غير ما يضرب
+    # ممكن تحط المفتاح هنا مؤقتا للمرحلة دي بس، او تستخدم Environment Variables
+    # بس الأفضل تعتمد علي st.secrets وتعمل ملف secrets.toml لوكال
+    api_key = "PLACEHOLDER_FOR_LOCAL_TESTING" 
 
+genai.configure(api_key=api_key)
 # Load the model
 # NOTE: Ensure the path is correct for your local machine or deployment
 try:
