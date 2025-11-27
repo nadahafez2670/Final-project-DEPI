@@ -177,11 +177,6 @@ Final-project-DEPI/
 │   │   ├── 4_🔮_Churn_Prediction.py
 ├── Project Documentation/              # Additional Documentation
 └── README.md                           # Project Documentationion
-├── project_cover.jpg                   # Project Cover Image
-├── Evidence.gif                        # App Demo GIF
-├── feature_importance_xgboost.png      # Feature Importance Plot
-├── feature_importance_rf.png           # Feature Importance Plot
-└── README.md                           # Project Documentation
 ```
 
 ## 👥 Team Structure
